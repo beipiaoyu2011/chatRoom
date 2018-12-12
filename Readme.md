@@ -8,9 +8,13 @@ A simple chat demo for socket.io
 ## How to use
 
 ```
-$ cd chatRoom
-$ npm install
-$ npm run dev
+    
+    $ cd chatRoom
+    
+    $ npm install
+    
+    $ npm run dev
+
 ```
 
 And point your browser to `http://localhost:3642`. Optionally, specify
