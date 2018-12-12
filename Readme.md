@@ -3,6 +3,8 @@
 
 A simple chat demo for socket.io
 
+![](https://i.imgur.com/G6IjCzT.png)
+
 ## How to use
 
 ```

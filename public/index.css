@@ -101,7 +101,7 @@
   color: white;
 }
 .chatText {
-  width: 100px;
+  max-width: 50%;
   height: 30px;
   line-height: 30px;
   background: #fff;
@@ -111,6 +111,9 @@
   text-align: left;
   display: inline-block;
   vertical-align: middle;
+  overflow: hidden;
+  white-space: nowrap;
+  text-emphasis: emphasis;
 }
 li.mySelf .chatText {
   background: #9fe757;
