@@ -5,6 +5,8 @@ var submitBtn = document.getElementById('submitBtn');
 var typeInput = document.getElementById('typeInput');
 var photoInput = document.querySelector('.photoInput');
 var profileBox = document.querySelector('.profileBox');
+var photoImage = document.querySelector('.photoImage');
+var messages = document.getElementById('messages');
 
 var chatPage = document.querySelector('.chatPage');
 var loginPage = document.querySelector('.loginPage');
@@ -16,8 +18,8 @@ var chartTitle = 'ChatRoom 1.0';
 var connected = false;
 var username;
 var typing = false;
-var lastSendTime;//last time of sending the message
-var lastTypingTime;//last time of typing the message
+var lastSendTime; //last time of sending the message
+var lastTypingTime; //last time of typing the message
 var TYPING_TIMER_LENGTH = 500;
 var COLORS = [
     '#e21400', '#91580f', '#f8a700', '#f78b00',
@@ -38,13 +40,10 @@ photoInput.onchange = () => {
     }
     fileReader.onload = e => {
         photoUrl = e.target.result;
+        photoImage.src = photoUrl;
+        photoImage.style.display = 'block';
     };
 };
-
-// profileBox.onclick = ()=>{
-//     var clickEvent = new Event('click');
-//     photoInput.dispatchEvent(clickEvent);
-// }
 
 
 //获取当前time
@@ -56,7 +55,6 @@ const getNowTime = () => {
 const log = (msg, obj) => {
     if (!obj) obj = {};
     const li = document.createElement('li');
-    console.log(msg, obj);
     li.innerHTML = msg;
     if (obj.log) {
         li.classList.add('log');
@@ -68,7 +66,10 @@ const log = (msg, obj) => {
             li.classList.add('mySelf')
         }
     }
-    document.getElementById('messages').appendChild(li);
+    messages.appendChild(li);
+    console.log(chatPage.scrollHeight, chatPage.clientHeight, chatPage.offsetHeight);
+
+    chatPage.scrollTop = chatPage.scrollHeight;
 };
 
 //added participants number message
@@ -94,12 +95,14 @@ const sendMessage = (message, isSelf) => {
             username: username,
             message: message,
             align: isSelf ? 'right' : '',
-            time: getNowTime()
+            time: getNowTime(),
+            photoUrl
         });
         //log into other client char body
         socket.emit('new message', {
             message: message,
-            time: getNowTime()
+            time: getNowTime(),
+            photoUrl
         });
     }
 }
@@ -123,41 +126,41 @@ const setUsername = () => {
         //login
         loginPage.style.display = 'none';
         chatPage.style.display = 'block';
-        socket.emit('add user', usernameInput.value);
+        socket.emit('add user', {
+            username: usernameInput.value,
+            photoUrl
+        });
         typeInput.focus();
+        usernameInput.value = '';
     }
 };
 
 //addChatMessage
 const addChatMessage = data => {
-    console.log('addChat', data);
     if (data.username && data.message) {
-        const bg = 'style="background: ' + getUsernameColor(data.username) + '"' || '';
+        const bg = data.photoUrl ? "style='background-image:url(" + data.photoUrl + ")'" : 'style="background-color:' + getUsernameColor(data.username) + '"';
         //show time of send message
         if (data.time && lastSendTime != data.time) {
             lastSendTime = data.time;
             log(
-                '<span class="chatTime">' + data.time + '</span>',
-                {
+                '<span class="chatTime">' + data.time + '</span>', {
                     time: true,
                 }
             );
         }
         if (data.align == 'right') {
             log(
-                '<span class="chatText">' + data.message + '</span>'
-                + '  ' +
-                '<span class="chatUsername"  ' + bg + '>' + data.username + '</span>',
-                {
+                '<span class="chatText">' + data.message + '</span>' +
+                '  ' +
+                '<span class="chatUsername"  ' + bg + '>' + data.username + '</span>', {
                     align: 'right'
                 }
             );
         } else {
             log(
-                '<span class="chatUsername" ' + bg + '}>' + data.username + '</span>'
-                + '  ' +
-                '<span class="chatText">' + data.message + '</span>',
-                {
+                '<span class="chatUsername" ' + bg + '}>' + data.username + '</span>' +
+                '  ' +
+                '<span class="chatText">' + data.message + '</span>', {
                     align: ''
                 }
             );
@@ -174,7 +177,7 @@ window.onkeydown = e => {
         typeInput.focus();
     }
     if (e.keyCode == 13) {
-        if (username) {
+        if (username && photoUrl) {
             //chat room
             loginPage.style.display = 'none';
             chatPage.style.display = 'block';
@@ -228,8 +231,8 @@ const recordUserData = data => {
         userId: data.userId
     };
     if (_.findIndex(userData, o => {
-        return o.username = data.username;
-    }) > -1) {
+            return o.username = data.username;
+        }) > -1) {
         console.log('already joined');
     } else {
         userData = _.concat(userData, obj);
@@ -243,8 +246,9 @@ const recordUserData = data => {
 socket.on('login', data => {
     connected = true;
     var message = 'welcome to socket.io chat room ';
+    if (!data.username) return;
     log(message, {
-        log: true,// prompt
+        log: true, // prompt
     });
     recordUserData(data);
     addParticipantsMessage(data);
@@ -258,9 +262,8 @@ socket.on('new message', data => {
 //whether the server emits "user joined", log it in chart body
 socket.on('user joined', data => {
     log(
-        '<b>' + data.username + '</b> joined',
-        {
-            log: true,// prompt
+        '<b>' + data.username + '</b> joined', {
+            log: true, // prompt
         }
     );
     addParticipantsMessage(data);
@@ -269,13 +272,14 @@ socket.on('user joined', data => {
 //whether the server emits "user left", log it in chart body
 socket.on('user left', data => {
     log(
-        '<b>' + data.username + '</b> left',
-        {
-            log: true,// prompt
+        '<b>' + data.username + '</b> left', {
+            log: true, // prompt
         }
     );
     const userData = JSON.parse(localStorage.getItem('chatUser')) || [];
-    const left_index = _.findIndex(userData, o => { return o.username = data.username });
+    const left_index = _.findIndex(userData, o => {
+        return o.username = data.username
+    });
     userData.splice(left_index, 1);
     localStorage.setItem('chatUser', JSON.stringify(userData));
     addParticipantsMessage(data);
@@ -293,20 +297,22 @@ socket.on('stop typing', () => {
 
 
 socket.on('reconnect', () => {
-    log('you have been reconnected', { log: true });
+    log('you have been reconnected', {
+        log: true
+    });
     if (username) {
         socket.emit('add user', username);
     }
 });
 
 socket.on('disconnect', () => {
-    log('you have been disconnected', { log: true });
+    log('you have been disconnected', {
+        log: true
+    });
 });
 
 socket.on('reconnect_error', () => {
-    log('attempt to reconnect has failed', { log: true });
+    log('attempt to reconnect has failed', {
+        log: true
+    });
 });
-
-
-
-

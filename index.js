@@ -21,22 +21,25 @@ io.on('connection', socket => {
         socket.broadcast.emit('new message', {
             username: socket.username,
             message: data.message,
-            time: data.time
+            time: data.time,
+            photoUrl: data.photoUrl
         });
     });
 
     //when the client emits "add user", the listens and executes
-    socket.on('add user', username => {
+    socket.on('add user', data => {
         if (addedUser) return;
 
         //we store the username in the socket session for this client
-        socket.username = username;
+        socket.username = data.username;
+        socket.photoUrl = data.photoUrl;
         ++numUsers;
         addedUser = true;
         socket.emit('login', {
             numUsers: numUsers,
             userId: socket.id,
-            username: username
+            username: data.username,
+            photoUrl: data.photoUrl
         });
         //echo globally (all clients) that a person has connected
         socket.broadcast.emit('user joined', {

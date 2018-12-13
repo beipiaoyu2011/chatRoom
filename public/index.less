@@ -106,13 +106,14 @@
     width: 30px;
     height: 30px;
     display: inline-block;
-    background: saddlebrown;
     border-radius: 100%;
     text-align: center;
     font-size: 12px;
     line-height: 30px;
     vertical-align: middle;
     color: white;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
 }
 
 .chatText {
@@ -155,25 +156,41 @@ li.mySelf .chatText {
     text-align: center;
 }
 
-.profileBox{
+.profileBox {
     width: 120px;
     height: 120px;
     display: inline-block;
-    border-radius: 120px;
+    border-radius: 124px;
     line-height: 120px;
     vertical-align: middle;
-    border: 2px dotted @border-color;
+    border: 1px dotted @border-color;
     text-align: center;
     margin-bottom: 100px;
     cursor: pointer;
     position: relative;
+    box-sizing: border-box;
 }
 
-.photoInput{
+.photoInput {
     position: absolute;
     left: 0;
     right: 0;
     top: 0;
     bottom: 0;
     opacity: 0;
+    z-index: 8;
+}
+
+.photoImage {
+    width: 120px;
+    height: 120px;
+    border-radius: 124px;
+    border: 1px dotted @border-color;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 6;
+    cursor: pointer;
 }
