@@ -3,6 +3,8 @@ var socket = io();
 //Initialize variables
 var submitBtn = document.getElementById('submitBtn');
 var typeInput = document.getElementById('typeInput');
+var photoInput = document.querySelector('.photoInput');
+var profileBox = document.querySelector('.profileBox');
 
 var chatPage = document.querySelector('.chatPage');
 var loginPage = document.querySelector('.loginPage');
@@ -22,6 +24,28 @@ var COLORS = [
     '#58dc00', '#287b00', '#a8f07a', '#4ae8c4',
     '#3b88eb', '#3824aa', '#a700ff', '#d300e7'
 ];
+
+var photoUrl = '';
+
+//observe files input
+photoInput.onchange = () => {
+    const fileReader = new FileReader();
+    const files = photoInput.files;
+    if (files && files.length) {
+        for (let i = 0, l = files.length; i < l; i++) {
+            fileReader.readAsDataURL(files[i]);
+        }
+    }
+    fileReader.onload = e => {
+        photoUrl = e.target.result;
+    };
+};
+
+// profileBox.onclick = ()=>{
+//     var clickEvent = new Event('click');
+//     photoInput.dispatchEvent(clickEvent);
+// }
+
 
 //获取当前time
 const getNowTime = () => {

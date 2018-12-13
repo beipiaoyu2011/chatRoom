@@ -34,6 +34,7 @@
 }
 .loginBox {
   width: 300px;
+  text-align: center;
 }
 .loginTip {
   text-align: center;
@@ -134,4 +135,25 @@ li.mySelf .chatText {
   line-height: 45px;
   vertical-align: middle;
   text-align: center;
+}
+.profileBox {
+  width: 120px;
+  height: 120px;
+  display: inline-block;
+  border-radius: 120px;
+  line-height: 120px;
+  vertical-align: middle;
+  border: 2px dotted #dadada;
+  text-align: center;
+  margin-bottom: 100px;
+  cursor: pointer;
+  position: relative;
+}
+.photoInput {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  opacity: 0;
 }
