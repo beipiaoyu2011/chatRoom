@@ -98,6 +98,8 @@
 }
 #messages li {
   padding: 5px 10px;
+  clear: both;
+  zoom: 1;
 }
 #messages li.log {
   text-align: center;

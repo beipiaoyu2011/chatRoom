@@ -5,7 +5,7 @@ A simple chat demo for socket.io
 
 ![](https://i.imgur.com/vLg1lZs.png)
 
-![](https://i.imgur.com/g0N9aHh.png)
+![](https://i.imgur.com/anQuH7t.png)
 
 ## How to use
 

@@ -123,6 +123,7 @@ const sendMessage = (message, isSelf) => {
 
 //get the color of the user
 const getUsernameColor = username => {
+    if(!username) return;
     //compute hash code
     let hash = 7;
     for (let i = 0; i < username.length; i++) {
@@ -194,7 +195,6 @@ const generateHtml = (data, type) => {
         _html = `
             <div class="chatItem">
                 <div class="chatItemRight">
-                    <div class="chatItemRight_top" ${nameColor}>${data.username}</div>
                     <div class="chatItemRight_bottom">${data.username}</div>
                 </div>
                 <div class="chatItemLeft">
