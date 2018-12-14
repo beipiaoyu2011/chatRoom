@@ -14,6 +14,9 @@ var usernameInput = document.getElementsByClassName('usernameInput')[0];
 var chatHeader = document.querySelector('.charHeader');
 var chartTitle = 'ChatRoom 1.0';
 
+usernameInput.focus();
+usernameInput.value = '';
+
 //Prompt for setting a username
 var connected = false;
 var username;
