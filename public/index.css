@@ -1,3 +1,20 @@
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar:horizontal {
+  height: 8px;
+}
+::-webkit-scrollbar-button {
+  height: 8px;
+  width: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+}
+::-webkit-scrollbar-corner {
+  background: rgba(0, 0, 0, 0.2);
+}
 * {
   margin: 0;
   padding: 0;
@@ -14,6 +31,7 @@
   width: 100%;
   height: calc(100% - 45px);
   padding-top: 45px;
+  padding-bottom: 20px;
   background: #f5f5f5;
   overflow: auto;
 }
@@ -189,6 +207,7 @@ li.mySelf .chatText {
   width: 80%;
   display: flex;
   flex-wrap: nowrap;
+  margin: 10px 0;
 }
 .chatItem .chatItemLeft {
   flex-basis: 40px;
