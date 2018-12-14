@@ -182,18 +182,41 @@ const addChatMessage = data => {
 
 const generateHtml = (data, type) => {
     const bg = data.photoUrl ? "style='background-image:url(" + data.photoUrl + ")'" : 'style="background-color:' + getUsernameColor(data.username) + '"';
+    const nameColor = 'style="color:' + getUsernameColor(data.username) + '"';
     let _html = '';
     //时间提示
     if (type == 'time') {
         _html = '<span class="chatTime">' + data.time || '--' + '</span>';
     } else if (type == 'ownSend') {//自己发送
-        _html = '<span class="chatText">' + data.message + '</span>' +
-            '  ' +
-            '<span class="chatUsername"  ' + bg + '>' + data.username + '</span>';
+        // _html = '<span class="chatText">' + data.message + '</span>' +
+        //     '  ' +
+        //     '<span class="chatUsername"  ' + bg + '>' + data.username + '</span>';
+        _html = `
+            <div class="chatItem">
+                <div class="chatItemRight">
+                    <div class="chatItemRight_top" ${nameColor}>${data.username}</div>
+                    <div class="chatItemRight_bottom">${data.username}</div>
+                </div>
+                <div class="chatItemLeft">
+                    <span class="chatUsername" ${bg}></span>
+                </div>
+            </div>
+        `;
     } else if (type == 'otherSend') {//别人发送
-        _html = '<span class="chatUsername" ' + bg + '}>' + data.username + '</span>' +
-            '  ' +
-            '<span class="chatText">' + data.message + '</span>';
+        // _html = '<span class="chatUsername" ' + bg + '}>' + data.username + '</span>' +
+        //     '  ' +
+        //     '<span class="chatText">' + data.message + '</span>';
+        _html = `
+            <div class="chatItem">
+                <div class="chatItemLeft">
+                    <span class="chatUsername" ${bg}></span>
+                </div>
+                <div class="chatItemRight">
+                    <div class="chatItemRight_top" ${nameColor}>${data.username}</div>
+                    <div class="chatItemRight_bottom">${data.username}</div>
+                </div>
+            </div>
+        `;
     } else if (type == 'join' || type == 'left') {//用户进入 或者 离开
         _html = '<b style="color: ' + getUsernameColor(data.username) + '">' + data.username + '</b> ' + type;
     }
