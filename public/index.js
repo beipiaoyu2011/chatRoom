@@ -194,12 +194,10 @@ const generateHtml = (data, type) => {
         _html = '<span class="chatUsername" ' + bg + '}>' + data.username + '</span>' +
             '  ' +
             '<span class="chatText">' + data.message + '</span>';
-    } else if (type == 'join') {//用户进入
-        _html = '<b style="color: ' + getUsernameColor(data.username) + '">' + data.username + '</b> join';
-    } else if (type == 'left') {//用户离开
-        _html = '<b style="color: ' + getUsernameColor(data.username) + '">' + data.username + '</b> join';
+    } else if (type == 'join' || type == 'left') {//用户进入 或者 离开
+        _html = '<b style="color: ' + getUsernameColor(data.username) + '">' + data.username + '</b> ' + type;
     }
-    return _html
+    return _html;
 };
 
 //keyboard event
