@@ -27,23 +27,24 @@ var COLORS = [
     '#3b88eb', '#3824aa', '#a700ff', '#d300e7'
 ];
 
+
 var photoUrl = '';
 
 //observe files input
 photoInput.onchange = () => {
     const fileReader = new FileReader();
     const files = photoInput.files;
-        
+
     if (files && files.length) {
         for (let i = 0, l = files.length; i < l; i++) {
-            if(!files[i].type.includes('image')){
+            if (!files[i].type.includes('image')) {
                 alert('please upload image, not others files');
                 return;
             }
             fileReader.readAsDataURL(files[i]);
         }
     }
-    fileReader.onload = e => {        
+    fileReader.onload = e => {
         photoUrl = e.target.result;
         photoImage.src = photoUrl;
         photoImage.style.display = 'block';
@@ -138,7 +139,11 @@ const setUsername = () => {
         typeInput.focus();
         usernameInput.value = '';
     } else {
-        alert('please upload your photo or type in your name !');
+        popup.show({
+            width: 300,
+            height: 100,
+            content: 'please upload your photo or type in your name !'
+        });
     }
 };
 
