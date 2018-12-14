@@ -38,7 +38,12 @@ photoInput.onchange = () => {
     if (files && files.length) {
         for (let i = 0, l = files.length; i < l; i++) {
             if (!files[i].type.includes('image')) {
-                alert('please upload image, not others files');
+                popup.show({
+                    width: 300,
+                    height: 100,
+                    content: 'please upload image, not others files',
+                    timer: 3000
+                });
                 return;
             }
             fileReader.readAsDataURL(files[i]);
@@ -142,7 +147,8 @@ const setUsername = () => {
         popup.show({
             width: 300,
             height: 100,
-            content: 'please upload your photo or type in your name !'
+            content: 'please upload your photo or type in your name !',
+            timer: 3000
         });
     }
 };

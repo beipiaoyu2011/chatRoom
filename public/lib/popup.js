@@ -23,19 +23,24 @@
                 this.box = box;
                 box.className = 'popup-box' + this.hash;
                 box.style.width = opts.width + 'px';
-                box.style.height = opts.height + 'px';
-                box.innerHTML = opts.content;
                 box.style.position = 'absolute';
-                box.style.background = '#cc6f00';
-                box.style.display = 'flex';
-                box.style.justifyContent = 'center';
-                box.style.alignContent = 'center';
+                box.style.background = 'rgba(0, 0, 0, .5)';
+                box.style.lineHeight = opts.height + 'px';
+                box.style.textAlign = 'center';
                 box.style.borderRadius = '6px';
                 box.style.color = 'white';
                 box.style.left = '50%';
                 box.style.top = '50%';
                 box.style.marginLeft = -(opts.width / 2) + 'px';
                 box.style.marginTop = -(opts.height / 2) + 'px';
+
+                const content = document.createElement('span');
+                content.className = 'popup-content';
+                content.style.display = 'inline-block';
+                content.style.lineHeight = 1.5;
+                content.style.verticalAlign = 'middle';
+                content.innerHTML = opts.content;
+                box.appendChild(content);
                 document.body.appendChild(box);
             }
         };
@@ -49,6 +54,13 @@
             };
             var options = this.extend(_opts, opts || {});
             this.init(options);
+
+            //定时关闭
+            if(options.timer){
+                setTimeout(()=>{
+                    this.box.style.display = 'none';
+                }, options.timer)
+            }
         }
 
         //合并 后一个object到前面 object
