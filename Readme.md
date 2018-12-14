@@ -3,7 +3,9 @@
 
 A simple chat demo for socket.io
 
-![](https://i.imgur.com/G6IjCzT.png)
+![](https://i.imgur.com/vLg1lZs.png)
+
+![](https://i.imgur.com/g0N9aHh.png)
 
 ## How to use
 
