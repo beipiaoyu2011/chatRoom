@@ -33,12 +33,17 @@ var photoUrl = '';
 photoInput.onchange = () => {
     const fileReader = new FileReader();
     const files = photoInput.files;
+        
     if (files && files.length) {
         for (let i = 0, l = files.length; i < l; i++) {
+            if(!files[i].type.includes('image')){
+                alert('please upload image, not others files');
+                return;
+            }
             fileReader.readAsDataURL(files[i]);
         }
     }
-    fileReader.onload = e => {
+    fileReader.onload = e => {        
         photoUrl = e.target.result;
         photoImage.src = photoUrl;
         photoImage.style.display = 'block';
@@ -122,7 +127,7 @@ const getUsernameColor = username => {
 //set the client's username
 const setUsername = () => {
     username = usernameInput.value.trim();
-    if (username) {
+    if (username && photoUrl) {
         //login
         loginPage.style.display = 'none';
         chatPage.style.display = 'block';
@@ -132,6 +137,8 @@ const setUsername = () => {
         });
         typeInput.focus();
         usernameInput.value = '';
+    } else {
+        alert('please upload your photo or type in your name !');
     }
 };
 
@@ -231,8 +238,8 @@ const recordUserData = data => {
         userId: data.userId
     };
     if (_.findIndex(userData, o => {
-            return o.username = data.username;
-        }) > -1) {
+        return o.username = data.username;
+    }) > -1) {
         console.log('already joined');
     } else {
         userData = _.concat(userData, obj);

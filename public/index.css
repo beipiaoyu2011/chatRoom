@@ -144,7 +144,7 @@ li.mySelf .chatText {
   border-radius: 124px;
   line-height: 120px;
   vertical-align: middle;
-  border: 1px dotted #dadada;
+  border: 1px dashed #dadada;
   text-align: center;
   margin-bottom: 100px;
   cursor: pointer;
@@ -159,6 +159,7 @@ li.mySelf .chatText {
   bottom: 0;
   opacity: 0;
   z-index: 8;
+  cursor: pointer;
 }
 .photoImage {
   width: 120px;
