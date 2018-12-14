@@ -159,34 +159,47 @@ const setUsername = () => {
 //addChatMessage
 const addChatMessage = data => {
     if (data.username && data.message) {
-        const bg = data.photoUrl ? "style='background-image:url(" + data.photoUrl + ")'" : 'style="background-color:' + getUsernameColor(data.username) + '"';
         //show time of send message
         if (data.time && lastSendTime != data.time) {
             lastSendTime = data.time;
-            log(
-                '<span class="chatTime">' + data.time + '</span>', {
-                    time: true,
-                }
-            );
+            log(generateHtml(data, 'time'), {
+                time: true,
+            });
         }
         if (data.align == 'right') {
-            log(
-                '<span class="chatText">' + data.message + '</span>' +
-                '  ' +
-                '<span class="chatUsername"  ' + bg + '>' + data.username + '</span>', {
-                    align: 'right'
-                }
-            );
+            log(generateHtml(data, 'ownSend'), {
+                align: 'right'
+            });
         } else {
-            log(
-                '<span class="chatUsername" ' + bg + '}>' + data.username + '</span>' +
-                '  ' +
-                '<span class="chatText">' + data.message + '</span>', {
-                    align: ''
-                }
-            );
+            log(generateHtml(data, 'otherSend'), {
+                align: ''
+            });
         }
     }
+};
+
+//generate html
+
+const generateHtml = (data, type) => {
+    const bg = data.photoUrl ? "style='background-image:url(" + data.photoUrl + ")'" : 'style="background-color:' + getUsernameColor(data.username) + '"';
+    let _html = '';
+    //时间提示
+    if (type == 'time') {
+        _html = '<span class="chatTime">' + data.time || '--' + '</span>';
+    } else if (type == 'ownSend') {//自己发送
+        _html = '<span class="chatText">' + data.message + '</span>' +
+            '  ' +
+            '<span class="chatUsername"  ' + bg + '>' + data.username + '</span>';
+    } else if (type == 'otherSend') {//别人发送
+        _html = '<span class="chatUsername" ' + bg + '}>' + data.username + '</span>' +
+            '  ' +
+            '<span class="chatText">' + data.message + '</span>';
+    } else if (type == 'join') {//用户进入
+        _html = '<b style="color: ' + getUsernameColor(data.username) + '">' + data.username + '</b> join';
+    } else if (type == 'left') {//用户离开
+        _html = '<b style="color: ' + getUsernameColor(data.username) + '">' + data.username + '</b> join';
+    }
+    return _html
 };
 
 //keyboard event
@@ -198,14 +211,14 @@ window.onkeydown = e => {
         typeInput.focus();
     }
     if (e.keyCode == 13) {
-        if (username && photoUrl) {
+        //进入聊天
+        if (username && photoUrl && chatPage.style.display != 'none') {
             //chat room
-            loginPage.style.display = 'none';
-            chatPage.style.display = 'block';
             sendMessage(typeInput.value.trim(), 'mySelf');
             socket.emit('stop typing');
             typing = false;
         } else {
+            //登录页面
             setUsername();
         }
     }
@@ -282,21 +295,17 @@ socket.on('new message', data => {
 
 //whether the server emits "user joined", log it in chart body
 socket.on('user joined', data => {
-    log(
-        '<b>' + data.username + '</b> joined', {
-            log: true, // prompt
-        }
-    );
+    log(generateHtml(data, 'join'), {
+        log: true, // prompt
+    });
     addParticipantsMessage(data);
 });
 
 //whether the server emits "user left", log it in chart body
 socket.on('user left', data => {
-    log(
-        '<b>' + data.username + '</b> left', {
-            log: true, // prompt
-        }
-    );
+    log(generateHtml(data, 'left'), {
+        log: true, // prompt
+    });
     const userData = JSON.parse(localStorage.getItem('chatUser')) || [];
     const left_index = _.findIndex(userData, o => {
         return o.username = data.username
