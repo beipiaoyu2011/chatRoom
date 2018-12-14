@@ -45,7 +45,7 @@ photoInput.onchange = () => {
                     width: 300,
                     height: 100,
                     content: 'please upload image, not others files',
-                    timer: 3000
+                    timer: 2000
                 });
                 return;
             }
@@ -151,7 +151,7 @@ const setUsername = () => {
             width: 300,
             height: 100,
             content: 'please upload your photo or type in your name !',
-            timer: 3000
+            timer: 2000
         });
     }
 };

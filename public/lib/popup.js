@@ -24,6 +24,7 @@
                 box.className = 'popup-box' + this.hash;
                 box.style.width = opts.width + 'px';
                 box.style.position = 'absolute';
+                box.style.zIndex = 666;
                 box.style.background = 'rgba(0, 0, 0, .5)';
                 box.style.lineHeight = opts.height + 'px';
                 box.style.textAlign = 'center';
@@ -43,6 +44,7 @@
                 box.appendChild(content);
                 document.body.appendChild(box);
             }
+            this.clickOutside();
         };
 
         //show control
@@ -54,10 +56,9 @@
             };
             var options = this.extend(_opts, opts || {});
             this.init(options);
-
             //定时关闭
-            if(options.timer){
-                setTimeout(()=>{
+            if (options.timer) {
+                setTimeout(() => {
                     this.box.style.display = 'none';
                 }, options.timer)
             }
@@ -82,6 +83,17 @@
         //hide
         this.hide = function () {
             this.box.style.display = 'none';
+        }
+
+        //点击外边关闭弹窗
+        this.clickOutside = function () {
+            document.onclick = e => {
+                e.stopPropagation();
+                this.box.style.display = 'none';
+            }
+            if (this.box) this.box.onclick = e => {
+                e.stopPropagation();
+            }
         }
 
     }
