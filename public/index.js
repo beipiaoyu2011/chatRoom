@@ -123,7 +123,7 @@ const sendMessage = (message, isSelf) => {
 
 //get the color of the user
 const getUsernameColor = username => {
-    if(!username) return;
+    if (!username) return;
     //compute hash code
     let hash = 7;
     for (let i = 0; i < username.length; i++) {
@@ -188,7 +188,7 @@ const generateHtml = (data, type) => {
     //时间提示
     if (type == 'time') {
         _html = '<span class="chatTime">' + data.time || '--' + '</span>';
-    } else if (type == 'ownSend') {//自己发送
+    } else if (type == 'ownSend') { //自己发送
         // _html = '<span class="chatText">' + data.message + '</span>' +
         //     '  ' +
         //     '<span class="chatUsername"  ' + bg + '>' + data.username + '</span>';
@@ -202,7 +202,7 @@ const generateHtml = (data, type) => {
                 </div>
             </div>
         `;
-    } else if (type == 'otherSend') {//别人发送
+    } else if (type == 'otherSend') { //别人发送
         // _html = '<span class="chatUsername" ' + bg + '}>' + data.username + '</span>' +
         //     '  ' +
         //     '<span class="chatText">' + data.message + '</span>';
@@ -217,7 +217,7 @@ const generateHtml = (data, type) => {
                 </div>
             </div>
         `;
-    } else if (type == 'join' || type == 'left') {//用户进入 或者 离开
+    } else if (type == 'join' || type == 'left') { //用户进入 或者 离开
         _html = '<b style="color: ' + getUsernameColor(data.username) + '">' + data.username + '</b> ' + type;
     }
     return _html;
@@ -286,8 +286,8 @@ const recordUserData = data => {
         userId: data.userId
     };
     if (_.findIndex(userData, o => {
-        return o.username = data.username;
-    }) > -1) {
+            return o.username = data.username;
+        }) > -1) {
         console.log('already joined');
     } else {
         userData = _.concat(userData, obj);
